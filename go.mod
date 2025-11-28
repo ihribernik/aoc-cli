@@ -1,4 +1,4 @@
-module github.com/ihribernik/advent-of-code
+module github.com/ihribernik/aoc-cli
 
 go 1.24.1
 

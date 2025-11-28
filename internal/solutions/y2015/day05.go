@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ihribernik/advent-of-code/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day05 struct{}

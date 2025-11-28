@@ -3,7 +3,7 @@ package y2015_test
 import (
 	"testing"
 
-	"github.com/ihribernik/advent-of-code/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 func TestDay06Part1(t *testing.T) {

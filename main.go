@@ -1,10 +1,9 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package main
 
-import "github.com/ihribernik/advent-of-code/cmd"
+import "github.com/ihribernik/aoc-cli/cmd"
 
 func main() {
 	cmd.Execute()

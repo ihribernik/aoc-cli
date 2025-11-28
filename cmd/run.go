@@ -9,9 +9,9 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/ihribernik/advent-of-code/internal/solutions"
-	_ "github.com/ihribernik/advent-of-code/internal/solutions/y2015"
-	common "github.com/ihribernik/advent-of-code/pkg/common"
+	"github.com/ihribernik/aoc-cli/internal/solutions"
+	_ "github.com/ihribernik/aoc-cli/internal/solutions/y2015"
+	common "github.com/ihribernik/aoc-cli/pkg/common"
 	"github.com/spf13/cobra"
 )
 

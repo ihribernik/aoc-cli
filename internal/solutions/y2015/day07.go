@@ -1,6 +1,6 @@
 package y2015
 
-import "github.com/ihribernik/advent-of-code/internal/solutions"
+import "github.com/ihribernik/aoc-cli/internal/solutions"
 
 type Day07 struct{}
 
