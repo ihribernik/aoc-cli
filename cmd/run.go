@@ -4,13 +4,14 @@ Copyright © 2025 ivan hribernik cihribernik@gmail.com
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"strconv"
 
 	"github.com/ihribernik/advent-of-code/internal/solutions"
 	_ "github.com/ihribernik/advent-of-code/internal/solutions/y2015"
-	"github.com/ihribernik/advent-of-code/pkg/common"
+	common "github.com/ihribernik/advent-of-code/pkg/common"
 	"github.com/spf13/cobra"
 )
 
@@ -22,15 +23,23 @@ var runCmd = &cobra.Command{
 	Run:   runner,
 }
 
-func runner(cmd *cobra.Command, args []string) {
+func parseArgs(args []string) (int, int, error) {
 	year, err := strconv.Atoi(args[0])
 	if err != nil {
-		log.Fatal("Error: year must be a string")
+		return 0, 0, errors.New("error: year must be a string")
 	}
 
 	day, err := strconv.Atoi(args[1])
 	if err != nil {
-		log.Fatal("Error: day must be a string")
+		return 0, 0, errors.New("error: day must be a string")
+	}
+	return year, day, nil
+}
+
+func runner(cmd *cobra.Command, args []string) {
+	year, day, err := parseArgs(args)
+	if err != nil {
+		log.Fatalf("Error parsing arguments: %v", err)
 	}
 
 	solver, ok := solutions.GetSolver(year, day)
@@ -38,9 +47,7 @@ func runner(cmd *cobra.Command, args []string) {
 		log.Fatalf("No se encontró solución para el año %d, día %d", year, day)
 	}
 
-	runner := common.Runner{Year: year, Day: day} // TODO: change common.Runner to common.InputParser
-	input, err := runner.Input()
-
+	input, err := common.GetInput(year, day)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}

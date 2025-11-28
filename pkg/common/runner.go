@@ -8,13 +8,8 @@ import (
 	"path/filepath"
 )
 
-type Runner struct {
-	Year int
-	Day  int
-}
-
-func (runner Runner) Input() ([]string, error) {
-	filepath := filepath.Join("input", fmt.Sprintf("%d", runner.Year), fmt.Sprintf("day%02d.txt", runner.Day))
+func GetInput(year int, day int) ([]string, error) {
+	filepath := filepath.Join("input", fmt.Sprintf("%d", year), fmt.Sprintf("day%02d.txt", day))
 	data, err := os.ReadFile(filepath)
 	if err != nil {
 		return []string{}, err
