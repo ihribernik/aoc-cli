@@ -4,10 +4,8 @@ Copyright © 2025 ivan hribernik cihribernik@gmail.com
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"strconv"
 
 	"github.com/ihribernik/aoc-cli/internal/solutions"
 	_ "github.com/ihribernik/aoc-cli/internal/solutions/y2015"
@@ -17,29 +15,21 @@ import (
 
 // runCmd represents the run command
 var runCmd = &cobra.Command{
-	Use:   "run [year] [day]",
+	Use:   "run --year <year> --day <day>",
 	Short: "Ejecuta el ejercicio para el Año dia indicado",
-	Args:  cobra.ExactArgs(2),
+	Args:  cobra.NoArgs,
 	Run:   runner,
 }
 
-func parseArgs(args []string) (int, int, error) {
-	year, err := strconv.Atoi(args[0])
-	if err != nil {
-		return 0, 0, errors.New("error: year must be a string")
-	}
-
-	day, err := strconv.Atoi(args[1])
-	if err != nil {
-		return 0, 0, errors.New("error: day must be a string")
-	}
-	return year, day, nil
-}
-
 func runner(cmd *cobra.Command, args []string) {
-	year, day, err := parseArgs(args)
+	year, err := cmd.Flags().GetInt("year")
 	if err != nil {
-		log.Fatalf("Error parsing arguments: %v", err)
+		log.Fatalf("Error parsing year: %v", err)
+	}
+
+	day, err := cmd.Flags().GetInt("day")
+	if err != nil {
+		log.Fatalf("Error parsing day: %v", err)
 	}
 
 	solver, ok := solutions.GetSolver(year, day)
@@ -67,15 +57,9 @@ func runner(cmd *cobra.Command, args []string) {
 }
 
 func init() {
+	runCmd.Flags().IntP("year", "y", 0, "Año del ejercicio (ej: 2015)")
+	runCmd.Flags().IntP("day", "d", 0, "Día del ejercicio (ej: 6)")
+	_ = runCmd.MarkFlagRequired("year")
+	_ = runCmd.MarkFlagRequired("day")
 	rootCmd.AddCommand(runCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// runCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

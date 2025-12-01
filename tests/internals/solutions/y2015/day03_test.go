@@ -11,7 +11,7 @@ func TestDay03Part01(t *testing.T) {
 	type TestCase = struct {
 		desc           string
 		input          []string
-		expectedResult solutions.Solution
+		expectedResult int
 	}
 
 	testCases := []TestCase{
@@ -20,21 +20,21 @@ func TestDay03Part01(t *testing.T) {
 			input: []string{
 				">",
 			},
-			expectedResult: solutions.Solution{Result: 2},
+			expectedResult: 2,
 		},
 		{
 			desc: "delivers presents to 4 houses in a square, including twice to the house at his starting/ending location",
 			input: []string{
 				"^>v<",
 			},
-			expectedResult: solutions.Solution{Result: 4},
+			expectedResult: 4,
 		},
 		{
 			desc: "delivers a bunch of presents to some very lucky children at only 2 houses",
 			input: []string{
 				"^v^v^v^v^v",
 			},
-			expectedResult: solutions.Solution{Result: 2},
+			expectedResult: 2,
 		},
 	}
 
@@ -46,7 +46,7 @@ func TestDay03Part01(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart1(tC.input)
-			if result.Result != tC.expectedResult.Result || err != nil {
+			if result != tC.expectedResult || err != nil {
 				t.Errorf(`solver.SolverPart1(%v) = %v, whants %v, error %v`, tC.input, result, tC.expectedResult, err)
 
 			}
@@ -58,33 +58,30 @@ func TestDay03Part02(t *testing.T) {
 	type TestCase = struct {
 		desc           string
 		input          []string
-		expectedResult solutions.Solution
+		expectedResult int
 	}
 
-	// ^v delivers presents to 3 houses, because Santa goes north, and then Robo-Santa goes south.
-	// ^>v< now delivers presents to 3 houses, and Santa and Robo-Santa end up back where they started.
-	// ^v^v^v^v^v now delivers presents to 11 houses, with Santa going one direction and Robo-Santa going the other.
 	testCases := []TestCase{
 		{
 			desc: "delivers presents to 3 houses, because Santa goes north, and then Robo-Santa goes south.",
 			input: []string{
 				"^v",
 			},
-			expectedResult: solutions.Solution{Result: 3},
+			expectedResult: 3,
 		},
 		{
 			desc: "now delivers presents to 3 houses, and Santa and Robo-Santa end up back where they started.",
 			input: []string{
 				"^>v<",
 			},
-			expectedResult: solutions.Solution{Result: 3},
+			expectedResult: 3,
 		},
 		{
 			desc: "delivers a bunch of presents to some very lucky children at only 2 houses",
 			input: []string{
 				"^v^v^v^v^v",
 			},
-			expectedResult: solutions.Solution{Result: 11},
+			expectedResult: 11,
 		},
 	}
 
@@ -96,7 +93,7 @@ func TestDay03Part02(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart2(tC.input)
-			if result.Result != tC.expectedResult.Result || err != nil {
+			if result != tC.expectedResult || err != nil {
 				t.Errorf(`solver.SolverPart1(%v) = %v, whants %v, error %v`, tC.input, result, tC.expectedResult, err)
 
 			}

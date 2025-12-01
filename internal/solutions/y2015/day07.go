@@ -5,12 +5,12 @@ import "github.com/ihribernik/aoc-cli/internal/solutions"
 type Day07 struct{}
 
 // SolvePart1 implements solutions.Solver.
-func (d Day07) SolvePart1(input []string) (solutions.Solution, error) {
+func (d Day07) SolvePart1(input []string) (int, error) {
 	panic("unimplemented")
 }
 
 // SolvePart2 implements solutions.Solver.
-func (d Day07) SolvePart2(input []string) (solutions.Solution, error) {
+func (d Day07) SolvePart2(input []string) (int, error) {
 	panic("unimplemented")
 }
 

@@ -34,7 +34,7 @@ func (d Day06) getMatrixNumeric() map[string]int {
 }
 
 // SolvePart1 implements solutions.Solver.
-func (d Day06) SolvePart1(input []string) (solutions.Solution, error) {
+func (d Day06) SolvePart1(input []string) (int, error) {
 	result := 0
 	matrix := d.getMatrix()
 	for _, v := range input {
@@ -85,11 +85,11 @@ func (d Day06) SolvePart1(input []string) (solutions.Solution, error) {
 			result++
 		}
 	}
-	return solutions.Solution{Result: result}, nil
+	return result, nil
 }
 
 // SolvePart2 implements solutions.Solver.
-func (d Day06) SolvePart2(input []string) (solutions.Solution, error) {
+func (d Day06) SolvePart2(input []string) (int, error) {
 	result := 0
 	matrix := d.getMatrixNumeric()
 	for _, v := range input {
@@ -117,7 +117,6 @@ func (d Day06) SolvePart2(input []string) (solutions.Solution, error) {
 
 		for x := fromDx; x <= toDx; x++ {
 			for y := fromDy; y <= toDy; y++ {
-				// fmt.Printf("x:%v, fromdx:%v, todx:%v, y:%d,fromDy:%d, toDy:%d\n", x, fromDx, toDx, y, fromDy, toDy)
 				key := fmt.Sprintf("%v,%v", x, y)
 				prevBright := matrix[key]
 				posibleBright := 0
@@ -142,7 +141,7 @@ func (d Day06) SolvePart2(input []string) (solutions.Solution, error) {
 		result += brightness
 	}
 
-	return solutions.Solution{Result: result}, nil
+	return result, nil
 }
 
 func init() {

@@ -10,7 +10,7 @@ func TestDay04Part01(t *testing.T) {
 	type TestCase = struct {
 		desc           string
 		input          []string
-		expectedResult solutions.Solution
+		expectedResult int
 	}
 
 	testCases := []TestCase{
@@ -19,14 +19,14 @@ func TestDay04Part01(t *testing.T) {
 			input: []string{
 				"abcdef",
 			},
-			expectedResult: solutions.Solution{Result: 609043},
+			expectedResult: 609043,
 		},
 		{
 			desc: "anwser is 1048970...",
 			input: []string{
 				"pqrstuv",
 			},
-			expectedResult: solutions.Solution{Result: 1048970},
+			expectedResult: 1048970,
 		},
 	}
 
@@ -39,7 +39,7 @@ func TestDay04Part01(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart1(tC.input)
-			if result.Result != tC.expectedResult.Result || err != nil {
+			if result != tC.expectedResult || err != nil {
 				t.Errorf(`solver.SolverPart1(%v) = %v, whants %v, error %v`, tC.input, result, tC.expectedResult, err)
 
 			}
