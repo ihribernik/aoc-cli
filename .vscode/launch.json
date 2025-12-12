@@ -10,11 +10,7 @@
       "request": "launch",
       "mode": "debug",
       "program": "${workspaceFolder}/main.go",
-      "args": [
-        "run",
-        "2015",
-        "6"
-      ]
+      "args": ["run", "-y", "2015", "-d", "8"]
     }
   ]
 }

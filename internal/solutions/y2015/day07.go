@@ -79,7 +79,7 @@ func calculateWireValue(wire string, wires map[string]gate, memoization map[stri
 
 	g, ok := wires[wire]
 	if !ok {
-		return 0, fmt.Errorf("wire %s not found", wire)
+		return 0, fmt.Errorf("wire '%s' not found", wire)
 	}
 
 	var result uint16
