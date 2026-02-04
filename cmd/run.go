@@ -30,7 +30,6 @@ func runner(cmd *cobra.Command, args []string) {
 	}
 
 	reg := registry.NewRegistry()
-
 	err = solutions.RegisterYear(reg, year)
 	if err != nil {
 		log.Fatalf("failed to register the year %d, err: %d", year, err)

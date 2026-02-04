@@ -21,13 +21,15 @@ func TestDay01_SolvePart1(t *testing.T) {
 		{[]string{"(", "(", ")", "(", ")"}, 1},
 	}
 
-	registry := registry.NewRegistry()
-	err := solutions.RegisterYear(registry, 2015)
+	year := 2015
+
+	reg := registry.NewRegistry()
+	err := solutions.RegisterYear(reg, year)
 	if err != nil {
-		t.Errorf("failed to load registry for the year %d, err: %d", 2015, err)
+		t.Errorf("failed to load registry for the year %d, err: %d", year, err)
 	}
 
-	solver, ok := registry.GetSolver(2015, 1)
+	solver, ok := reg.GetSolver(year, 1)
 	if !ok {
 		t.Errorf("failed to get solver")
 	}
