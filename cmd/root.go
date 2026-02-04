@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 ivan hribernik cihribernik@gmail.com
-*/
 package cmd
 
 import (

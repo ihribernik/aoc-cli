@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
-
-	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day07 struct{}
@@ -68,7 +66,6 @@ func generateCircuit(input []string) (map[string]gate, error) {
 }
 
 func calculateWireValue(wire string, wires map[string]gate, memoization map[string]uint16) (uint16, error) {
-
 	if v, ok := memoization[wire]; ok {
 		return v, nil
 	}
@@ -152,7 +149,6 @@ func calculateWireValue(wire string, wires map[string]gate, memoization map[stri
 
 // SolvePart1 implements solutions.Solver.
 func (d Day07) SolvePart1(input []string) (int, error) {
-
 	wires, err := generateCircuit(input)
 	if err != nil {
 		return 0, err
@@ -194,8 +190,4 @@ func (d Day07) SolvePart2(input []string) (int, error) {
 	}
 
 	return int(value), nil
-}
-
-func init() {
-	solutions.Register(2015, 07, Day07{})
 }

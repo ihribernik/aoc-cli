@@ -4,8 +4,6 @@ import (
 	"slices"
 	"strconv"
 	"strings"
-
-	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day02 struct{}
@@ -20,10 +18,10 @@ func (d Day02) SolvePart1(input []string) (int, error) {
 		}
 
 		areas := []int{l * w, w * h, h * l}
-		area_total := 2 * (areas[0] + areas[1] + areas[2])
-		extra_paper := slices.Min(areas)
-		result_area := area_total + extra_paper
-		result += result_area
+		areaTotal := 2 * (areas[0] + areas[1] + areas[2])
+		extraPaper := slices.Min(areas)
+		resultArea := areaTotal + extraPaper
+		result += resultArea
 	}
 	return result, nil
 }
@@ -38,22 +36,20 @@ func (d Day02) SolvePart2(input []string) (int, error) {
 		}
 		numbers := []int{l, w, h}
 		slices.Sort(numbers)
-		min_1 := numbers[0]
-		min_2 := numbers[1]
-		wrap_feet := min_1 + min_1 + min_2 + min_2
-		bow_feet := l * w * h
-		total_feet := wrap_feet + bow_feet
-		result += total_feet
+		min1 := numbers[0]
+		min2 := numbers[1]
+		wrapFeet := min1 + min1 + min2 + min2
+		bowFeet := l * w * h
+		totalFeet := wrapFeet + bowFeet
+		result += totalFeet
 	}
 
 	return result, nil
-
 }
 
 func (d Day02) parseLine(input string) (int, int, int, error) {
 	inputVars := strings.Split(input, "x")
 	l, err := strconv.Atoi(inputVars[0])
-
 	if err != nil {
 		return 0, 0, 0, err
 	}
@@ -67,8 +63,4 @@ func (d Day02) parseLine(input string) (int, int, int, error) {
 	}
 
 	return l, w, h, nil
-}
-
-func init() {
-	solutions.Register(2015, 02, Day02{})
 }

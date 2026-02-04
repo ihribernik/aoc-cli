@@ -3,11 +3,10 @@ package y2015_test
 import (
 	"testing"
 
-	"github.com/ihribernik/aoc-cli/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/registry"
 )
 
 func TestDay07Part1(t *testing.T) {
-
 	type TestCase = []struct {
 		desc           string
 		input          []string
@@ -31,7 +30,8 @@ func TestDay07Part1(t *testing.T) {
 			expectedResult: 123,
 		},
 	}
-	solver, ok := solutions.GetSolver(2015, 07)
+	registry := registry.NewRegistry()
+	solver, ok := registry.GetSolver(2015, 0o7)
 
 	if !ok {
 		t.Errorf("failed to get solver")
@@ -48,7 +48,6 @@ func TestDay07Part1(t *testing.T) {
 }
 
 func TestDay07Part2(t *testing.T) {
-
 	type TestCase = []struct {
 		desc           string
 		input          []string
@@ -73,7 +72,8 @@ func TestDay07Part2(t *testing.T) {
 
 		},
 	}
-	solver, ok := solutions.GetSolver(2015, 07)
+	registry := registry.NewRegistry()
+	solver, ok := registry.GetSolver(2015, 0o7)
 
 	if !ok {
 		t.Errorf("failed to get solver")

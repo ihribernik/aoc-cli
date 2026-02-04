@@ -2,8 +2,6 @@ package y2015
 
 import (
 	"strconv"
-
-	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day08 struct{}
@@ -20,7 +18,6 @@ func (d Day08) SolvePart1(input []string) (int, error) {
 
 		literalsCounter += len(line)
 		evaluated, err := strconv.Unquote(line)
-
 		if err != nil {
 			return 0, err
 		}
@@ -51,9 +48,4 @@ func (d Day08) SolvePart2(input []string) (int, error) {
 
 	total := quotedLiteralsCounter - literalsCounter
 	return total, nil
-
-}
-
-func init() {
-	solutions.Register(2015, 8, Day08{})
 }

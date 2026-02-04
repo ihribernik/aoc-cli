@@ -4,11 +4,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ihribernik/aoc-cli/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/registry"
 )
 
 func TestDay08Part1(t *testing.T) {
-
 	type TestCase = []struct {
 		desc           string
 		input          []string
@@ -22,7 +21,8 @@ func TestDay08Part1(t *testing.T) {
 			expectedResult: 12,
 		},
 	}
-	solver, ok := solutions.GetSolver(2015, 8)
+	registry := registry.NewRegistry()
+	solver, ok := registry.GetSolver(2015, 8)
 
 	if !ok {
 		t.Errorf("failed to get solver")

@@ -1,4 +1,4 @@
-package common
+package directions
 
 import "fmt"
 
@@ -20,6 +20,10 @@ var (
 		">": WEST,
 	}
 )
+
+func NewDirection(x, y int) *Direction {
+	return &Direction{x, y}
+}
 
 func (dir Direction) LessThan(otherDir Direction) bool {
 	if dir.X != otherDir.X {
@@ -45,6 +49,6 @@ func (dir Direction) NewPosition(otherDir Direction, n int) Direction {
 	return Direction{X: dx, Y: dy}
 }
 
-func (d Direction) String() string {
-	return fmt.Sprintf("%d,%d", d.X, d.Y)
+func (dir Direction) String() string {
+	return fmt.Sprintf("%d,%d", dir.X, dir.Y)
 }

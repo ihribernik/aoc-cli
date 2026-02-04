@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-
-	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day05 struct{}
@@ -23,7 +21,7 @@ func (d Day05) SolvePart1(input []string) (int, error) {
 
 		for i, letter := range word {
 			if strings.ContainsRune(vowels, letter) {
-				threeVowels += 1
+				threeVowels++
 			}
 			if i > 0 {
 				if letter == rune(word[i-1]) {
@@ -38,12 +36,10 @@ func (d Day05) SolvePart1(input []string) (int, error) {
 
 	}
 	return result, nil
-
 }
 
 // SolvePart2 implements solutions.Solver.
 func (d Day05) SolvePart2(input []string) (int, error) {
-
 	result := 0
 	for _, word := range input {
 		twice := false
@@ -66,13 +62,9 @@ func (d Day05) SolvePart2(input []string) (int, error) {
 		}
 
 		if twice && repeats {
-			result += 1
+			result++
 		}
 	}
 
 	return result, nil
-}
-
-func init() {
-	solutions.Register(2015, 05, Day05{})
 }

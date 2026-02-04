@@ -1,7 +1,5 @@
 package y2015
 
-import "github.com/ihribernik/aoc-cli/internal/solutions"
-
 type Day01 struct{}
 
 func (d Day01) SolvePart1(input []string) (int, error) {
@@ -9,10 +7,9 @@ func (d Day01) SolvePart1(input []string) (int, error) {
 	for _, v := range input {
 		switch v {
 		case "(":
-			result += 1
+			result++
 		case ")":
-			result -= 1
-
+			result--
 		default:
 			continue
 		}
@@ -33,17 +30,13 @@ func (d Day01) SolvePart2(input []string) (int, error) {
 
 		switch v {
 		case "(":
-			floor += 1
+			floor++
 		case ")":
-			floor -= 1
+			floor--
 		default:
 			continue
 		}
 	}
 
 	return positionChar, nil
-}
-
-func init() {
-	solutions.Register(2015, 01, Day01{})
 }

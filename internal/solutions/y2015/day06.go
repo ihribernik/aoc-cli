@@ -5,8 +5,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day06 struct{}
@@ -142,8 +140,4 @@ func (d Day06) SolvePart2(input []string) (int, error) {
 	}
 
 	return result, nil
-}
-
-func init() {
-	solutions.Register(2015, 06, Day06{})
 }

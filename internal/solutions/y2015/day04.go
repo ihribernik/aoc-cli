@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"math"
 	"strings"
-
-	"github.com/ihribernik/aoc-cli/internal/solutions"
 )
 
 type Day04 struct{}
@@ -18,7 +16,6 @@ func (d Day04) SolvePart1(input []string) (int, error) {
 		hashedString := fmt.Sprintf("%x", md5.Sum([]byte(currentInput)))
 		if strings.HasPrefix(hashedString, "00000") {
 			return i, nil
-
 		}
 	}
 	return 0, fmt.Errorf("cannot guess the name")
@@ -34,8 +31,4 @@ func (d Day04) SolvePart2(input []string) (int, error) {
 		}
 	}
 	return 0, fmt.Errorf("cannot guess the name")
-}
-
-func init() {
-	solutions.Register(2015, 4, Day04{})
 }

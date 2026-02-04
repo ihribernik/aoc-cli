@@ -3,7 +3,7 @@ package y2015_test
 import (
 	"testing"
 
-	"github.com/ihribernik/aoc-cli/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/registry"
 )
 
 func TestDay04Part01(t *testing.T) {
@@ -30,7 +30,8 @@ func TestDay04Part01(t *testing.T) {
 		},
 	}
 
-	solver, ok := solutions.GetSolver(2015, 04)
+	registry := registry.NewRegistry()
+	solver, ok := registry.GetSolver(2015, 0o4)
 
 	if !ok {
 		t.Errorf("failed to get solver")
@@ -41,7 +42,6 @@ func TestDay04Part01(t *testing.T) {
 			result, err := solver.SolvePart1(tC.input)
 			if result != tC.expectedResult || err != nil {
 				t.Errorf(`solver.SolverPart1(%v) = %v, whants %v, error %v`, tC.input, result, tC.expectedResult, err)
-
 			}
 		})
 	}

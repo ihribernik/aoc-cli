@@ -1,4 +1,4 @@
-package common
+package comparations
 
 import "slices"
 

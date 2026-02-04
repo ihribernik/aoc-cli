@@ -4,8 +4,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/ihribernik/aoc-cli/internal/solutions"
-	"github.com/ihribernik/aoc-cli/pkg/common"
+	"github.com/ihribernik/aoc-cli/internal/directions"
 )
 
 type Day03 struct{}
@@ -16,16 +15,16 @@ func (d Day03) parseLine(input []string) []string {
 }
 
 func (d Day03) SolvePart1(input []string) (int, error) {
-	position := common.Direction{X: 0, Y: 0}
+	position := directions.Direction{X: 0, Y: 0}
 
-	visited := []common.Direction{
+	visited := []directions.Direction{
 		position,
 	}
 
 	characters := d.parseLine(input)
 
 	for _, direction := range characters {
-		currentDirection := common.DIRECTIONS[direction]
+		currentDirection := directions.DIRECTIONS[direction]
 		position = currentDirection.NewPositionWith(position)
 		if !slices.Contains(visited, position) {
 			visited = append(visited, position)
@@ -35,32 +34,27 @@ func (d Day03) SolvePart1(input []string) (int, error) {
 }
 
 func (d Day03) SolvePart2(input []string) (int, error) {
-	position := common.Direction{X: 0, Y: 0}
+	position := directions.Direction{X: 0, Y: 0}
 
-	positions := []common.Direction{
+	positions := []directions.Direction{
 		position,
 		position,
 	}
 
-	visited := []common.Direction{
+	visited := []directions.Direction{
 		position,
 	}
 
-	directions := d.parseLine(input)
+	inputDirections := d.parseLine(input)
 
-	for chunk := range slices.Chunk(directions, 2) {
+	for chunk := range slices.Chunk(inputDirections, 2) {
 		for i, direction := range chunk {
-			currentDirection := common.DIRECTIONS[direction]
+			currentDirection := directions.DIRECTIONS[direction]
 			positions[i] = currentDirection.NewPositionWith(positions[i])
 			if !slices.Contains(visited, positions[i]) {
 				visited = append(visited, positions[i])
 			}
 		}
-
 	}
 	return len(visited), nil
-}
-
-func init() {
-	solutions.Register(2015, 03, Day03{})
 }

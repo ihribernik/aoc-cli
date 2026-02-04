@@ -3,7 +3,7 @@ package y2015_test
 import (
 	"testing"
 
-	"github.com/ihribernik/aoc-cli/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/registry"
 )
 
 func TestDay06Part1(t *testing.T) {
@@ -18,7 +18,8 @@ func TestDay06Part1(t *testing.T) {
 		{desc: "may turn on only 1000", input: []string{"toggle 0,0 through 999,0"}, expectedResult: 1000},
 		{desc: "may turn on only 4", input: []string{"turn on 499,499 through 500,500"}, expectedResult: 4},
 	}
-	solver, ok := solutions.GetSolver(2015, 06)
+	registry := registry.NewRegistry()
+	solver, ok := registry.GetSolver(2015, 0o6)
 
 	if !ok {
 		t.Errorf("failed to get solver")
@@ -45,7 +46,8 @@ func TestDay06Part2(t *testing.T) {
 		{desc: "may total brightness eq 1", input: []string{"turn on 0,0 through 0,0"}, expectedResult: 1},
 		{desc: "may total brightness eq 2000000.", input: []string{"toggle 0,0 through 999,999"}, expectedResult: 2000000},
 	}
-	solver, ok := solutions.GetSolver(2015, 06)
+	registry := registry.NewRegistry()
+	solver, ok := registry.GetSolver(2015, 0o6)
 
 	if !ok {
 		t.Errorf("failed to get solver")
