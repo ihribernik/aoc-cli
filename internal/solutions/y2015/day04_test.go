@@ -1,10 +1,6 @@
 package y2015_test
 
-import (
-	"testing"
-
-	"github.com/ihribernik/aoc-cli/internal/registry"
-)
+import "testing"
 
 func TestDay04Part01(t *testing.T) {
 	type TestCase = struct {
@@ -22,7 +18,7 @@ func TestDay04Part01(t *testing.T) {
 			expectedResult: 609043,
 		},
 		{
-			desc: "anwser is 1048970...",
+			desc: "answer is 1048970...",
 			input: []string{
 				"pqrstuv",
 			},
@@ -30,18 +26,13 @@ func TestDay04Part01(t *testing.T) {
 		},
 	}
 
-	registry := registry.NewRegistry()
-	solver, ok := registry.GetSolver(2015, 0o4)
-
-	if !ok {
-		t.Errorf("failed to get solver")
-	}
+	solver := mustSolver(t, 0o4)
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart1(tC.input)
 			if result != tC.expectedResult || err != nil {
-				t.Errorf(`solver.SolverPart1(%v) = %v, whants %v, error %v`, tC.input, result, tC.expectedResult, err)
+				t.Errorf(`solver.SolverPart1(%v) = %v, wants %v, error %v`, tC.input, result, tC.expectedResult, err)
 			}
 		})
 	}

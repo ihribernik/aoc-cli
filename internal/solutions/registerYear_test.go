@@ -1,6 +1,7 @@
 package solutions_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/ihribernik/aoc-cli/internal/registry"
@@ -8,28 +9,54 @@ import (
 )
 
 func TestRegisterYear(t *testing.T) {
-	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for target function.
-		r       *registry.Registry
-		year    int
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-		{"not found year", registry.NewRegistry(), 2099, true},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotErr := solutions.RegisterYear(tt.r, tt.year)
-			if gotErr != nil {
-				if !tt.wantErr {
-					t.Errorf("RegisterYear() failed: %v", gotErr)
-				}
-				return
-			}
-			if tt.wantErr {
-				t.Fatal("RegisterYear() succeeded unexpectedly")
-			}
-		})
-	}
+	t.Run("registers supported year", func(t *testing.T) {
+		r := registry.NewRegistry()
+		if err := solutions.RegisterYear(r, 2015); err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+
+		solver, ok := r.GetSolver(2015, 1)
+		if !ok || solver == nil {
+			t.Fatalf("expected solver for 2015 day 1 after registration")
+		}
+	})
+
+	t.Run("fails for unsupported year", func(t *testing.T) {
+		r := registry.NewRegistry()
+		err := solutions.RegisterYear(r, 2099)
+		if err == nil {
+			t.Fatalf("expected error for unsupported year")
+		}
+		if !strings.Contains(err.Error(), "unsupported year: 2099") {
+			t.Fatalf("unexpected error message: %v", err)
+		}
+	})
+
+	t.Run("fails for nil registry", func(t *testing.T) {
+		err := solutions.RegisterYear(nil, 2015)
+		if err == nil {
+			t.Fatalf("expected error for nil registry")
+		}
+		if !strings.Contains(err.Error(), "nil registry for year 2015") {
+			t.Fatalf("unexpected error message: %v", err)
+		}
+	})
+
+	t.Run("wraps year registration errors", func(t *testing.T) {
+		r := registry.NewRegistry()
+		if err := solutions.RegisterYear(r, 2015); err != nil {
+			t.Fatalf("unexpected setup error: %v", err)
+		}
+
+		err := solutions.RegisterYear(r, 2015)
+		if err == nil {
+			t.Fatalf("expected duplicate registration error")
+		}
+		if !strings.Contains(err.Error(), "register year 2015") {
+			t.Fatalf("expected year context in error, got: %v", err)
+		}
+		if !strings.Contains(err.Error(), "solver already registered") {
+			t.Fatalf("expected wrapped cause in error, got: %v", err)
+		}
+	})
 }

@@ -1,67 +1,81 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
-	"log"
+	"os"
 
-	"github.com/ihribernik/aoc-cli/internal/inputs"
-	"github.com/ihribernik/aoc-cli/internal/registry"
-	"github.com/ihribernik/aoc-cli/internal/solutions"
+	"github.com/ihribernik/aoc-cli/internal/container"
+	runusecase "github.com/ihribernik/aoc-cli/internal/run"
 	"github.com/spf13/cobra"
 )
 
+var appContainer = container.New()
+
 // runCmd represents the run command
 var runCmd = &cobra.Command{
-	Use:   "run --year <year> --day <day>",
-	Short: "Execute the solution for a specific puzzle in the year day requested",
-	Args:  cobra.NoArgs,
-	Run:   runner,
+	Use:          "run --year <year> --day <day>",
+	Short:        "Execute the solution for a specific Advent of Code puzzle",
+	Args:         cobra.NoArgs,
+	RunE:         runE,
+	SilenceUsage: true,
 }
 
-func runner(cmd *cobra.Command, args []string) {
+func runE(cmd *cobra.Command, args []string) error {
 	year, err := cmd.Flags().GetInt("year")
 	if err != nil {
-		log.Fatalf("Error parsing year: %v", err)
+		return fmt.Errorf("invalid --year value: %w", err)
 	}
 
 	day, err := cmd.Flags().GetInt("day")
 	if err != nil {
-		log.Fatalf("Error parsing day: %v", err)
+		return fmt.Errorf("invalid --day value: %w", err)
 	}
 
-	reg := registry.NewRegistry()
-	err = solutions.RegisterYear(reg, year)
+	if day < 1 || day > 25 {
+		return fmt.Errorf("invalid --day %d: expected a value between 1 and 25", day)
+	}
+
+	result, err := appContainer.Runner.Execute(year, day)
 	if err != nil {
-		log.Fatalf("failed to register the year %d, err: %d", year, err)
+		return mapRunError(year, day, err)
 	}
 
-	solver, ok := reg.GetSolver(year, day)
+	fmt.Println("Solution part 1:", result.Part1)
+	fmt.Println("Solution part 2:", result.Part2)
+	return nil
+}
 
-	if !ok {
-		log.Fatalf("cannot find a solution for the year %d, day %d", year, day)
+func mapRunError(year int, day int, err error) error {
+	var registerErr *runusecase.ErrRegisterYear
+	if errors.As(err, &registerErr) {
+		return fmt.Errorf("year %d is not available: %w", registerErr.Year, registerErr.Err)
 	}
 
-	input, err := inputs.GetInput(year, day)
-	if err != nil {
-		log.Fatalf("Error: %v", err)
+	var solverErr *runusecase.ErrSolverNotFound
+	if errors.As(err, &solverErr) {
+		return fmt.Errorf("no solver registered for year %d day %02d", solverErr.Year, solverErr.Day)
 	}
 
-	result1, err := solver.SolvePart1(input)
-	if err != nil {
-		log.Fatalf("Error: %v", err)
+	var inputErr *runusecase.ErrGetInput
+	if errors.As(err, &inputErr) {
+		if errors.Is(inputErr.Err, os.ErrNotExist) || os.IsNotExist(inputErr.Err) {
+			return fmt.Errorf("input file not found for year %d day %02d", inputErr.Year, inputErr.Day)
+		}
+		return fmt.Errorf("cannot load input for year %d day %02d: %w", inputErr.Year, inputErr.Day, inputErr.Err)
 	}
-	fmt.Println("Solution part 1:", result1)
 
-	result2, err := solver.SolvePart2(input)
-	if err != nil {
-		log.Fatalf("Error: %v", err)
+	var solveErr *runusecase.ErrSolvePart
+	if errors.As(err, &solveErr) {
+		return fmt.Errorf("failed while solving part %d: %w", solveErr.Part, solveErr.Err)
 	}
-	fmt.Println("solution part 2:", result2)
+
+	return fmt.Errorf("run failed for year %d day %02d: %w", year, day, err)
 }
 
 func init() {
-	runCmd.Flags().IntP("year", "y", 0, "Year to execute (ej: 2015)")
-	runCmd.Flags().IntP("day", "d", 0, "Day to execute (ej: 6)")
+	runCmd.Flags().IntP("year", "y", 0, "Year to execute (e.g. 2015)")
+	runCmd.Flags().IntP("day", "d", 0, "Day to execute (e.g. 6)")
 	_ = runCmd.MarkFlagRequired("year")
 	_ = runCmd.MarkFlagRequired("day")
 	rootCmd.AddCommand(runCmd)

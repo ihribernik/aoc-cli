@@ -9,6 +9,8 @@ import (
 
 type Day06 struct{}
 
+var day06InstructionPattern = regexp.MustCompile(`^(turn on|turn off|toggle) (\d+,\d+) through (\d+,\d+)$`)
+
 func (d Day06) getMatrix() map[string]bool {
 	matrix := map[string]bool{}
 	for dx := range 1000 {
@@ -31,49 +33,69 @@ func (d Day06) getMatrixNumeric() map[string]int {
 	return matrix
 }
 
+func parseCoordPair(raw string) (int, int, error) {
+	parts := strings.Split(raw, ",")
+	if len(parts) != 2 {
+		return 0, 0, fmt.Errorf("invalid coordinate pair %q", raw)
+	}
+
+	dx, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return 0, 0, fmt.Errorf("invalid x coordinate %q: %w", parts[0], err)
+	}
+	dy, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return 0, 0, fmt.Errorf("invalid y coordinate %q: %w", parts[1], err)
+	}
+
+	return dx, dy, nil
+}
+
+func parseInstruction(line string) (action string, fromDx int, fromDy int, toDx int, toDy int, err error) {
+	matches := day06InstructionPattern.FindStringSubmatch(line)
+	if matches == nil {
+		return "", 0, 0, 0, 0, fmt.Errorf("invalid instruction %q", line)
+	}
+
+	fromDx, fromDy, err = parseCoordPair(matches[2])
+	if err != nil {
+		return "", 0, 0, 0, 0, err
+	}
+	toDx, toDy, err = parseCoordPair(matches[3])
+	if err != nil {
+		return "", 0, 0, 0, 0, err
+	}
+
+	return matches[1], fromDx, fromDy, toDx, toDy, nil
+}
+
 // SolvePart1 implements solutions.Solver.
 func (d Day06) SolvePart1(input []string) (int, error) {
 	result := 0
 	matrix := d.getMatrix()
+
 	for _, v := range input {
-		containsGroups := regexp.MustCompile(`^(turn on|turn off|toggle) (\d+,\d+) through (\d+,\d+)$`)
-		matches := containsGroups.FindStringSubmatch(v)
-		action := matches[1]
-		from := strings.Split(matches[2], ",")
-		fromDx, err := strconv.Atoi(from[0])
+		action, fromDx, fromDy, toDx, toDy, err := parseInstruction(v)
 		if err != nil {
-			panic("not a valid from")
-		}
-		fromDy, err := strconv.Atoi(from[1])
-		if err != nil {
-			panic("not a valid from")
-		}
-		to := strings.Split(matches[3], ",")
-		toDx, err := strconv.Atoi(to[0])
-		if err != nil {
-			panic("not a valid to")
-		}
-		toDy, err := strconv.Atoi(to[1])
-		if err != nil {
-			panic("not a valid to")
+			return 0, err
 		}
 
 		for x := fromDx; x <= toDx; x++ {
 			for y := fromDy; y <= toDy; y++ {
 				key := fmt.Sprintf("%v,%v", x, y)
 				prevAction := matrix[key]
-				posibleAction := false
+				nextAction := false
 				switch action {
 				case "toggle":
-					posibleAction = !prevAction
+					nextAction = !prevAction
 				case "turn off":
-					posibleAction = false
+					nextAction = false
 				case "turn on":
-					posibleAction = true
+					nextAction = true
 				default:
-					panic("not a valid action")
+					return 0, fmt.Errorf("invalid action %q", action)
 				}
-				matrix[key] = posibleAction
+				matrix[key] = nextAction
 			}
 		}
 	}
@@ -90,47 +112,31 @@ func (d Day06) SolvePart1(input []string) (int, error) {
 func (d Day06) SolvePart2(input []string) (int, error) {
 	result := 0
 	matrix := d.getMatrixNumeric()
+
 	for _, v := range input {
-		containsGroups := regexp.MustCompile(`^(turn on|turn off|toggle) (\d+,\d+) through (\d+,\d+)$`)
-		matches := containsGroups.FindStringSubmatch(v)
-		action := matches[1]
-		from := strings.Split(matches[2], ",")
-		fromDx, err := strconv.Atoi(from[0])
+		action, fromDx, fromDy, toDx, toDy, err := parseInstruction(v)
 		if err != nil {
-			panic("not a valid from")
-		}
-		fromDy, err := strconv.Atoi(from[1])
-		if err != nil {
-			panic("not a valid from")
-		}
-		to := strings.Split(matches[3], ",")
-		toDx, err := strconv.Atoi(to[0])
-		if err != nil {
-			panic("not a valid to")
-		}
-		toDy, err := strconv.Atoi(to[1])
-		if err != nil {
-			panic("not a valid to")
+			return 0, err
 		}
 
 		for x := fromDx; x <= toDx; x++ {
 			for y := fromDy; y <= toDy; y++ {
 				key := fmt.Sprintf("%v,%v", x, y)
 				prevBright := matrix[key]
-				posibleBright := 0
+				nextBright := 0
 				switch action {
 				case "toggle":
-					posibleBright = prevBright + 2
+					nextBright = prevBright + 2
 				case "turn off":
 					if prevBright > 0 {
-						posibleBright = prevBright - 1
+						nextBright = prevBright - 1
 					}
 				case "turn on":
-					posibleBright = prevBright + 1
+					nextBright = prevBright + 1
 				default:
-					panic("not a valid action")
+					return 0, fmt.Errorf("invalid action %q", action)
 				}
-				matrix[key] = posibleBright
+				matrix[key] = nextBright
 			}
 		}
 	}

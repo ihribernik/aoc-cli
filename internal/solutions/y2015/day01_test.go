@@ -1,46 +1,32 @@
 package y2015_test
 
-import (
-	"testing"
-
-	"github.com/ihribernik/aoc-cli/internal/registry"
-	"github.com/ihribernik/aoc-cli/internal/solutions"
-)
+import "testing"
 
 func TestDay01_SolvePart1(t *testing.T) {
 	type TestCase struct {
-		input          []string
+		input          string
 		expectedResult int
 	}
 
 	testsCases := []TestCase{
-		{[]string{"("}, 1},
-		{[]string{"(", ")"}, 0},
-		{[]string{"(", "(", ")"}, 1},
-		{[]string{"(", ")", "(", ")"}, 0},
-		{[]string{"(", "(", ")", "(", ")"}, 1},
+		{input: "(())", expectedResult: 0},
+		{input: "()()", expectedResult: 0},
+		{input: "(((", expectedResult: 3},
+		{input: "(()(()(", expectedResult: 3},
+		{input: "))(((((", expectedResult: 3},
+		{input: "())", expectedResult: -1},
+		{input: "))(", expectedResult: -1},
+		{input: ")))", expectedResult: -3},
+		{input: ")())())", expectedResult: -3},
 	}
 
-	year := 2015
-
-	reg := registry.NewRegistry()
-	err := solutions.RegisterYear(reg, year)
-	if err != nil {
-		t.Errorf("failed to load registry for the year %d, err: %d", year, err)
-	}
-
-	solver, ok := reg.GetSolver(year, 1)
-	if !ok {
-		t.Errorf("failed to get solver")
-	}
+	solver := mustSolver(t, 1)
 
 	for i, testCase := range testsCases {
 		t.Run("", func(t *testing.T) {
-			result, err := solver.SolvePart1(testCase.input)
-			if err != nil {
-				if result != testCase.expectedResult {
-					t.Fatalf("test %v: expected: %v, got: %v", i+1, testCase.expectedResult, result)
-				}
+			result, err := solver.SolvePart1([]string{testCase.input})
+			if err != nil || result != testCase.expectedResult {
+				t.Fatalf("test %v: expected: %v, got: %v, err: %v", i+1, testCase.expectedResult, result, err)
 			}
 		})
 	}
@@ -48,36 +34,23 @@ func TestDay01_SolvePart1(t *testing.T) {
 
 func TestDay01_SolvePart2(t *testing.T) {
 	type TestCase struct {
-		input    []string
+		input    string
 		expected int
 	}
 
 	testsCases := []TestCase{
-		{[]string{"("}, 1},
-		{[]string{"(", ")"}, 0},
-		{[]string{"(", "(", ")"}, 1},
-		{[]string{"(", ")", "(", ")"}, 0},
-		{[]string{"(", "(", ")", "(", ")"}, 1},
+		{input: ")", expected: 1},
+		{input: "()())", expected: 5},
+		{input: "(((((", expected: 0},
 	}
 
-	registry := registry.NewRegistry()
-	err := solutions.RegisterYear(registry, 2015)
-	if err != nil {
-		t.Errorf("failed to load registry for the year %d, err: %d", 2015, err)
-	}
-
-	solver, ok := registry.GetSolver(2015, 1)
-	if !ok {
-		t.Errorf("failed to get solver")
-	}
+	solver := mustSolver(t, 1)
 
 	for i, testCase := range testsCases {
 		t.Run("", func(t *testing.T) {
-			result, err := solver.SolvePart2(testCase.input)
-			if err != nil {
-				if result != testCase.expected {
-					t.Fatalf("test %v: expected: %v, got: %v", i+1, testCase.expected, result)
-				}
+			result, err := solver.SolvePart2([]string{testCase.input})
+			if err != nil || result != testCase.expected {
+				t.Fatalf("test %v: expected: %v, got: %v, err: %v", i+1, testCase.expected, result, err)
 			}
 		})
 	}

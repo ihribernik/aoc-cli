@@ -6,74 +6,92 @@ import (
 	"github.com/ihribernik/aoc-cli/internal/registry"
 )
 
-func TestRegistry_Register(t *testing.T) {
-	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for target function.
-		year    int
-		day     int
-		solver  registry.Solver
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			r := registry.NewRegistry()
-			gotErr := r.Register(tt.year, tt.day, tt.solver)
-			if gotErr != nil {
-				if !tt.wantErr {
-					t.Errorf("Register() failed: %v", gotErr)
-				}
-				return
-			}
-			if tt.wantErr {
-				t.Fatal("Register() succeeded unexpectedly")
-			}
-		})
-	}
-}
+type testSolver struct{}
 
-func TestRegistry_GetSolver(t *testing.T) {
-	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for target function.
-		year  int
-		day   int
-		want  registry.Solver
-		want2 bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			r := registry.NewRegistry()
-			got, got2 := r.GetSolver(tt.year, tt.day)
-			// TODO: update the condition below to compare got with tt.want.
-			if true {
-				t.Errorf("GetSolver() = %v, want %v", got, tt.want)
-			}
-			if true {
-				t.Errorf("GetSolver() = %v, want %v", got2, tt.want2)
-			}
-		})
-	}
-}
+func (s testSolver) SolvePart1(input []string) (int, error) { return len(input), nil }
+func (s testSolver) SolvePart2(input []string) (int, error) { return len(input), nil }
 
 func TestNewRegistry(t *testing.T) {
-	tests := []struct {
-		name string // description of this test case
-		want *registry.Registry
-	}{
-		// TODO: Add test cases.
+	r := registry.NewRegistry()
+	if r == nil {
+		t.Fatalf("expected non-nil registry")
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := registry.NewRegistry()
-			// TODO: update the condition below to compare got with tt.want.
-			if true {
-				t.Errorf("NewRegistry() = %v, want %v", got, tt.want)
-			}
-		})
+
+	if _, ok := r.GetSolver(2015, 1); ok {
+		t.Fatalf("expected empty registry")
+	}
+}
+
+func TestRegistryRegisterAndGetSolver(t *testing.T) {
+	r := registry.NewRegistry()
+	s := testSolver{}
+
+	if err := r.Register(2015, 1, s); err != nil {
+		t.Fatalf("unexpected register error: %v", err)
+	}
+
+	got, ok := r.GetSolver(2015, 1)
+	if !ok {
+		t.Fatalf("expected solver to exist")
+	}
+	if got == nil {
+		t.Fatalf("expected non-nil solver")
+	}
+}
+
+func TestRegistryRegisterNilSolver(t *testing.T) {
+	r := registry.NewRegistry()
+
+	if err := r.Register(2015, 1, nil); err == nil {
+		t.Fatalf("expected error for nil solver")
+	}
+}
+
+func TestRegistryRegisterDuplicate(t *testing.T) {
+	r := registry.NewRegistry()
+	s := testSolver{}
+
+	if err := r.Register(2015, 1, s); err != nil {
+		t.Fatalf("unexpected register error: %v", err)
+	}
+	if err := r.Register(2015, 1, s); err == nil {
+		t.Fatalf("expected duplicate register error")
+	}
+}
+
+func TestRegistryRegisterOnNilReceiver(t *testing.T) {
+	var r *registry.Registry
+
+	if err := r.Register(2015, 1, testSolver{}); err == nil {
+		t.Fatalf("expected error for nil receiver")
+	}
+}
+
+func TestRegistryGetSolverOnNilReceiver(t *testing.T) {
+	var r *registry.Registry
+
+	if got, ok := r.GetSolver(2015, 1); ok || got != nil {
+		t.Fatalf("expected nil,false for nil receiver, got %v,%v", got, ok)
+	}
+}
+
+func TestRegistryRegisterInitializesNilMap(t *testing.T) {
+	r := &registry.Registry{}
+	s := testSolver{}
+
+	if err := r.Register(2015, 1, s); err != nil {
+		t.Fatalf("unexpected register error: %v", err)
+	}
+
+	if got, ok := r.GetSolver(2015, 1); !ok || got == nil {
+		t.Fatalf("expected solver after lazy map initialization")
+	}
+}
+
+func TestRegistryGetSolverOnNilMap(t *testing.T) {
+	r := &registry.Registry{}
+
+	if got, ok := r.GetSolver(2015, 1); ok || got != nil {
+		t.Fatalf("expected nil,false for nil map, got %v,%v", got, ok)
 	}
 }

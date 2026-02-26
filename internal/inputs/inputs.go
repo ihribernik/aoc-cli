@@ -14,8 +14,13 @@ func GetInput(year int, day int) ([]string, error) {
 	}
 
 	content := strings.ReplaceAll(string(data), "\r\n", "\n")
+	if strings.HasSuffix(content, "\n") {
+		content = strings.TrimSuffix(content, "\n")
+	}
+	if content == "" {
+		return []string{}, nil
+	}
 
-	lineas := strings.Split(content, "\n")
-
-	return lineas, nil
+	lines := strings.Split(content, "\n")
+	return lines, nil
 }

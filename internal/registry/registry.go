@@ -25,13 +25,19 @@ func NewRegistry() *Registry {
 }
 
 func (r *Registry) Register(year int, day int, solver Solver) error {
-	if solver != nil {
+	if r == nil {
+		return fmt.Errorf("nil registry")
+	}
+	if solver == nil {
 		return fmt.Errorf("nil solver for %d %d", year, day)
 	}
-	key := Key{year, day}
+	if r.solvers == nil {
+		r.solvers = make(map[Key]Solver)
+	}
 
+	key := Key{year, day}
 	if _, exists := r.solvers[key]; exists {
-		return fmt.Errorf("solver already registered for %d", key)
+		return fmt.Errorf("solver already registered for %v", key)
 	}
 
 	r.solvers[key] = solver
@@ -39,6 +45,10 @@ func (r *Registry) Register(year int, day int, solver Solver) error {
 }
 
 func (r *Registry) GetSolver(year int, day int) (Solver, bool) {
+	if r == nil || r.solvers == nil {
+		return nil, false
+	}
+
 	key := Key{year, day}
 	solver, ok := r.solvers[key]
 	return solver, ok

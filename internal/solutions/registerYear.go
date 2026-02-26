@@ -12,12 +12,15 @@ import (
 // solver registration fails.
 func RegisterYear(r *registry.Registry, year int) error {
 	if r == nil {
-		return fmt.Errorf("nil registry for the year %d", year)
+		return fmt.Errorf("nil registry for year %d", year)
 	}
 
 	switch year {
 	case 2015:
-		return y2015.Register(r)
+		if err := y2015.Register(r); err != nil {
+			return fmt.Errorf("register year %d: %w", year, err)
+		}
+		return nil
 	default:
 		return fmt.Errorf("unsupported year: %d", year)
 	}

@@ -1,6 +1,7 @@
 package y2015
 
 import (
+	"fmt"
 	"slices"
 	"strconv"
 	"strings"
@@ -49,6 +50,10 @@ func (d Day02) SolvePart2(input []string) (int, error) {
 
 func (d Day02) parseLine(input string) (int, int, int, error) {
 	inputVars := strings.Split(input, "x")
+	if len(inputVars) != 3 {
+		return 0, 0, 0, fmt.Errorf("invalid box format %q: expected LxWxH", input)
+	}
+
 	l, err := strconv.Atoi(inputVars[0])
 	if err != nil {
 		return 0, 0, 0, err

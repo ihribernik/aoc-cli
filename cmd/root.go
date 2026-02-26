@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -8,9 +9,10 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "aoc-cli",
-	Short: "Advent of code cli runner",
-	Long:  `Advent of code cli es una herramienta de línea de comandos para resolver los ejercicios de Advent of Code.`,
+	Use:           "aoc-cli",
+	Short:         "Advent of Code CLI runner",
+	Long:          `Advent of Code CLI is a command-line tool to run Advent of Code solutions.`,
+	SilenceErrors: true,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -18,9 +20,7 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
-}
-
-func init() {
 }
