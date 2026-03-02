@@ -1,6 +1,7 @@
 package inputs_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -56,17 +57,49 @@ func TestGetInput(t *testing.T) {
 		}
 	})
 
-	t.Run("returns empty slice for empty file", func(t *testing.T) {
+	t.Run("returns empty input error for empty file", func(t *testing.T) {
 		tempDir := t.TempDir()
 		chdirForTest(t, tempDir)
 		mustWriteInput(t, tempDir, 2026, 3, "")
 
 		got, err := inputs.GetInput(2026, 3)
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
+		if !errors.Is(err, inputs.ErrEmptyInput) {
+			t.Fatalf("expected ErrEmptyInput, got %v", err)
 		}
 		if len(got) != 0 {
 			t.Fatalf("expected empty slice, got %v", got)
+		}
+	})
+
+	t.Run("trims repeated trailing newlines", func(t *testing.T) {
+		tempDir := t.TempDir()
+		chdirForTest(t, tempDir)
+		mustWriteInput(t, tempDir, 2026, 4, "x\ny\n\n")
+
+		got, err := inputs.GetInput(2026, 4)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+
+		want := []string{"x", "y"}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("GetInput() = %v, want %v", got, want)
+		}
+	})
+
+	t.Run("normalizes bare carriage returns", func(t *testing.T) {
+		tempDir := t.TempDir()
+		chdirForTest(t, tempDir)
+		mustWriteInput(t, tempDir, 2026, 5, "a\rb\r")
+
+		got, err := inputs.GetInput(2026, 5)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+
+		want := []string{"a", "b"}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("GetInput() = %v, want %v", got, want)
 		}
 	})
 }

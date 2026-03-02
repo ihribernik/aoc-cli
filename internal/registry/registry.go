@@ -26,7 +26,7 @@ func NewRegistry() *Registry {
 
 func (r *Registry) Register(year int, day int, solver Solver) error {
 	if r == nil {
-		return fmt.Errorf("nil registry")
+		return ErrNilRegistry
 	}
 	if solver == nil {
 		return fmt.Errorf("nil solver for %d %d", year, day)

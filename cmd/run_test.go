@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ihribernik/aoc-cli/internal/inputs"
 	runusecase "github.com/ihribernik/aoc-cli/internal/run"
 )
 
@@ -38,6 +39,13 @@ func TestMapRunError(t *testing.T) {
 			day:         9,
 			err:         &runusecase.ErrSolverNotFound{Year: 2015, Day: 9},
 			wantContain: "no solver registered for year 2015 day 09",
+		},
+		{
+			name:        "input file empty",
+			year:        2015,
+			day:         2,
+			err:         &runusecase.ErrGetInput{Year: 2015, Day: 2, Err: inputs.ErrEmptyInput},
+			wantContain: "input file is empty for year 2015 day 02",
 		},
 		{
 			name:        "input file missing",

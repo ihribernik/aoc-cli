@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/ihribernik/aoc-cli/internal/container"
+	"github.com/ihribernik/aoc-cli/internal/inputs"
 	runusecase "github.com/ihribernik/aoc-cli/internal/run"
 	"github.com/spf13/cobra"
 )
@@ -59,6 +60,9 @@ func mapRunError(year int, day int, err error) error {
 
 	var inputErr *runusecase.ErrGetInput
 	if errors.As(err, &inputErr) {
+		if errors.Is(inputErr.Err, inputs.ErrEmptyInput) {
+			return fmt.Errorf("input file is empty for year %d day %02d; download the puzzle input from Advent of Code", inputErr.Year, inputErr.Day)
+		}
 		if errors.Is(inputErr.Err, os.ErrNotExist) || os.IsNotExist(inputErr.Err) {
 			return fmt.Errorf("input file not found for year %d day %02d", inputErr.Year, inputErr.Day)
 		}
