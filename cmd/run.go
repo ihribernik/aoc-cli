@@ -7,24 +7,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func parseRunOptions(cmd *cobra.Command) (int, int, error) {
+	year, err := cmd.Flags().GetInt("year")
+	if err != nil {
+		return 0, 0, fmt.Errorf("invalid --year value: %w", err)
+	}
+
+	day, err := cmd.Flags().GetInt("day")
+	if err != nil {
+		return 0, 0, fmt.Errorf("invalid --day value: %w", err)
+	}
+
+	if day < 1 || day > 25 {
+		return 0, 0, fmt.Errorf("invalid --day %d: expected a value between 1 and 25", day)
+	}
+	return year, day, nil
+}
+
 func newRunCmd(runner runusecase.Runner) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "run --year <year> --day <day>",
 		Short: "Execute the solution for a specific Advent of Code puzzle",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			year, err := cmd.Flags().GetInt("year")
+			year, day, err := parseRunOptions(cmd)
 			if err != nil {
-				return fmt.Errorf("invalid --year value: %w", err)
-			}
-
-			day, err := cmd.Flags().GetInt("day")
-			if err != nil {
-				return fmt.Errorf("invalid --day value: %w", err)
-			}
-
-			if day < 1 || day > 25 {
-				return fmt.Errorf("invalid --day %d: expected a value between 1 and 25", day)
+				return err
 			}
 
 			if runner == nil {
