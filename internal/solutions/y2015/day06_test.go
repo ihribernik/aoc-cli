@@ -16,7 +16,7 @@ func TestDay06Part1(t *testing.T) {
 		{desc: "may turn on only 4", input: []string{"turn on 499,499 through 500,500"}, expectedResult: 4},
 		{desc: "invalid instruction", input: []string{"turnon 0,0 through 1,1"}, wantErr: true},
 	}
-	solver := mustSolver(t, 0o6)
+	solver := mustSolver(t, 6)
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
@@ -47,7 +47,7 @@ func TestDay06Part2(t *testing.T) {
 		{desc: "may total brightness eq 2000000.", input: []string{"toggle 0,0 through 999,999"}, expectedResult: 2000000},
 		{desc: "invalid instruction", input: []string{"turnon 0,0 through 1,1"}, wantErr: true},
 	}
-	solver := mustSolver(t, 0o6)
+	solver := mustSolver(t, 6)
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart2(tC.input)

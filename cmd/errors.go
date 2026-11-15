@@ -14,12 +14,12 @@ type cliError struct {
 	cause   error
 }
 
-func (e *cliError) Error() string { return e.message }
+func (e cliError) Error() string { return e.message }
 
-func (e *cliError) Unwrap() error { return e.cause }
+func (e cliError) Unwrap() error { return e.cause }
 
 func newCLIError(message string, cause error) error {
-	return &cliError{message: message, cause: cause}
+	return cliError{message: message, cause: cause}
 }
 
 func mapStartupError(err error) error {

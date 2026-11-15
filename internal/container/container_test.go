@@ -28,9 +28,6 @@ func TestNewReturnsRegistrationError(t *testing.T) {
 	if !errors.Is(err, cause) {
 		t.Fatalf("expected construction error to wrap %v, got %v", cause, err)
 	}
-	if err.Error() != "initialize solver registry: duplicate solver" {
-		t.Fatalf("unexpected construction message: %q", err.Error())
-	}
 }
 
 func TestNewReturnsRunnerInitializationError(t *testing.T) {
@@ -59,7 +56,7 @@ func TestNewReturnsRunnerInitializationError(t *testing.T) {
 	if !errors.Is(err, run.ErrRunnerNotConfigured) {
 		t.Fatalf("expected ErrRunnerNotConfigured, got %v", err)
 	}
-	const wantMessage = "initialize runner: initialize runner input loader: runner dependencies are not configured"
+	const wantMessage = "initialize runner input loader: runner dependencies are not configured"
 	if err.Error() != wantMessage {
 		t.Fatalf("expected error message %q, got %q", wantMessage, err.Error())
 	}

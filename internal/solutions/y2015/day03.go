@@ -17,8 +17,8 @@ func (d Day03) parseLine(input []string) []string {
 func (d Day03) SolvePart1(input []string) (int, error) {
 	position := directions.NewDirection(0, 0)
 
-	visited := []directions.Direction{
-		position,
+	visited := map[directions.Direction]struct{}{
+		position: {},
 	}
 
 	characters := d.parseLine(input)
@@ -26,9 +26,7 @@ func (d Day03) SolvePart1(input []string) (int, error) {
 	for _, direction := range characters {
 		currentDirection := directions.DIRECTIONS[direction]
 		position = currentDirection.NewPositionWith(position)
-		if !slices.Contains(visited, position) {
-			visited = append(visited, position)
-		}
+		visited[position] = struct{}{}
 	}
 	return len(visited), nil
 }
@@ -41,8 +39,8 @@ func (d Day03) SolvePart2(input []string) (int, error) {
 		position,
 	}
 
-	visited := []directions.Direction{
-		position,
+	visited := map[directions.Direction]struct{}{
+		position: {},
 	}
 
 	inputDirections := d.parseLine(input)
@@ -51,9 +49,7 @@ func (d Day03) SolvePart2(input []string) (int, error) {
 		for i, direction := range chunk {
 			currentDirection := directions.DIRECTIONS[direction]
 			positions[i] = currentDirection.NewPositionWith(positions[i])
-			if !slices.Contains(visited, positions[i]) {
-				visited = append(visited, positions[i])
-			}
+			visited[positions[i]] = struct{}{}
 		}
 	}
 	return len(visited), nil

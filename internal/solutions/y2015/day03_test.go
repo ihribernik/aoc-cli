@@ -33,7 +33,7 @@ func TestDay03Part01(t *testing.T) {
 		},
 	}
 
-	solver := mustSolver(t, 0o3)
+	solver := mustSolver(t, 3)
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
@@ -76,13 +76,13 @@ func TestDay03Part02(t *testing.T) {
 		},
 	}
 
-	solver := mustSolver(t, 0o3)
+	solver := mustSolver(t, 3)
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart2(tC.input)
 			if result != tC.expectedResult || err != nil {
-				t.Errorf(`solver.SolverPart1(%v) = %v, wants %v, error %v`, tC.input, result, tC.expectedResult, err)
+				t.Errorf(`solver.SolverPart2(%v) = %v, wants %v, error %v`, tC.input, result, tC.expectedResult, err)
 			}
 		})
 	}

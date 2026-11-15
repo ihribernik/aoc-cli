@@ -26,9 +26,9 @@ func newContainer(registerAll func(registry.Registry) error, newRunner func(run.
 		return nil, err
 	}
 
-	return &container{Runner: runner}, nil
+	return container{Runner: runner}, nil
 }
 
-func (c *container) GetRunner() run.Runner {
+func (c container) GetRunner() run.Runner {
 	return c.Runner
 }

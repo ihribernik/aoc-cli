@@ -16,7 +16,7 @@ func TestDay05Part01(t *testing.T) {
 		{desc: "another long naughty string", input: []string{"dvszwmarrgswjxmb"}, expectedResult: 0},
 	}
 
-	solver := mustSolver(t, 0o5)
+	solver := mustSolver(t, 5)
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart1(tC.input)
@@ -41,7 +41,7 @@ func TestDay05Part02(t *testing.T) {
 		{desc: "second long naughty string", input: []string{"ieodomkazucvgmuy"}, expectedResult: 0},
 	}
 
-	solver := mustSolver(t, 0o5)
+	solver := mustSolver(t, 5)
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart2(tC.input)

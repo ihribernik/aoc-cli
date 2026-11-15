@@ -121,11 +121,11 @@ func chdirForTest(t *testing.T, dir string) {
 func mustWriteInput(t *testing.T, baseDir string, year int, day int, content string) {
 	t.Helper()
 	dir := filepath.Join(baseDir, "input", fmt.Sprintf("%d", year))
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	if err := os.MkdirAll(dir, 755); err != nil {
 		t.Fatalf("mkdir input dir: %v", err)
 	}
 	path := filepath.Join(dir, fmt.Sprintf("day%02d.txt", day))
-	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+	if err := os.WriteFile(path, []byte(content), 644); err != nil {
 		t.Fatalf("write input file: %v", err)
 	}
 }

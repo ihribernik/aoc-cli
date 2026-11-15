@@ -26,7 +26,7 @@ func TestDay07Part1(t *testing.T) {
 			expectedResult: 123,
 		},
 	}
-	solver := mustSolver(t, 0o7)
+	solver := mustSolver(t, 7)
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart1(tC.input)
@@ -62,7 +62,7 @@ func TestDay07Part2(t *testing.T) {
 
 		},
 	}
-	solver := mustSolver(t, 0o7)
+	solver := mustSolver(t, 7)
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			result, err := solver.SolvePart2(tC.input)

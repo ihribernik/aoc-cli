@@ -28,7 +28,7 @@ func TestDay04Part01(t *testing.T) {
 		},
 	}
 
-	solver := mustSolver(t, 0o4)
+	solver := mustSolver(t, 4)
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
@@ -54,7 +54,7 @@ func TestDay04Part02(t *testing.T) {
 		},
 	}
 
-	solver := mustSolver(t, 0o4)
+	solver := mustSolver(t, 4)
 
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
