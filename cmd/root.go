@@ -21,6 +21,6 @@ func Execute() error {
 		return mapStartupError(err)
 	}
 
-	appContainer = configuredContainer
+	rootCmd.AddCommand(newRunCmd(configuredContainer.GetRunner()))
 	return rootCmd.Execute()
 }
