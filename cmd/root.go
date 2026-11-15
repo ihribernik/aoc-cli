@@ -2,15 +2,20 @@ package cmd
 
 import (
 	"github.com/ihribernik/aoc-cli/internal/container"
+	runusecase "github.com/ihribernik/aoc-cli/internal/run"
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:           "aoc-cli",
-	Short:         "Advent of Code CLI runner",
-	Long:          `Advent of Code CLI is a command-line tool to run Advent of Code solutions.`,
-	SilenceErrors: true,
+func newRootCmd(runner runusecase.Runner) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:           "aoc-cli",
+		Short:         "Advent of Code CLI runner",
+		Long:          `Advent of Code CLI is a command-line tool to run Advent of Code solutions.`,
+		SilenceErrors: true,
+	}
+	cmd.AddCommand(newRunCmd(runner))
+
+	return cmd
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -21,6 +26,6 @@ func Execute() error {
 		return mapStartupError(err)
 	}
 
-	rootCmd.AddCommand(newRunCmd(configuredContainer.GetRunner()))
-	return rootCmd.Execute()
+	cmd := newRootCmd(configuredContainer.GetRunner())
+	return cmd.Execute()
 }
